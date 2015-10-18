@@ -9,11 +9,21 @@ import { NavBar, FooterBar } from './partials';
 @Radium
 export default class App extends Component {
 
+  state = {
+    isLoggedIn: false
+  };
+
   render() {
     return (
       <div style={styles.app}>
-        <NavBar />
-        <main style={styles.main}>{this.props.children}</main>
+      <Style rules={styles.appRules} />
+        <NavBar isLoggedIn={this.state.isLoggedIn} />
+        <main style={styles.main}>
+          {React.cloneElement(this.props.children || <div />, {
+            setLoggedIn: isLoggedIn => this.setState({isLoggedIn: !!isLoggedIn}),
+            key: this.props.location.pathname
+          })}
+        </main>
       </div>
     );
   }
@@ -38,7 +48,6 @@ const styles = styler`
     h1
       font-size: 36px
       font-weight: 500
-      letter-spacing: 1px
     h2
       font-size: 30px
     h3
