@@ -1,13 +1,18 @@
 'use strict';
 
-import React, { Component, Children } from 'react';
+import React, { Component, Children, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Radium, { Style } from 'radium';
 import styler from 'react-styling';
 import { Router, Link } from 'react-router';
-import { NavBar, FooterBar } from './partials';
+import { NavBar, FooterBar } from '../components';
 
 @Radium
-export default class App extends Component {
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+  }
 
   state = {
     isLoggedIn: false
@@ -21,7 +26,13 @@ export default class App extends Component {
         <main style={styles.main}>
           {React.cloneElement(this.props.children || <div />, {
             setLoggedIn: isLoggedIn => this.setState({isLoggedIn: !!isLoggedIn}),
-            key: this.props.location.pathname
+            key: this.props.location.pathname,
+            user: this.props.user,
+            isFetching: this.props.isFetching,
+            didInvalidate: this.props.didInvalidate,
+            events: this.props.events,
+            lastUpdated: this.props.lastUpdated,
+            dispatch: this.props.dispatch
           })}
         </main>
       </div>
@@ -29,6 +40,33 @@ export default class App extends Component {
   }
 
 }
+
+App.propTypes = {
+  user: PropTypes.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool.isRequired,
+  events: PropTypes.array.isRequired,
+  lastUpdated: PropTypes.number,
+  dispatch: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+  const { user, events } = state;
+  const {
+    isFetching, didInvalidate,
+    items, lastUpdated
+  } = events || {
+    isFetching: true,
+    items: []
+  };
+
+  return {
+    user, isFetching, didInvalidate,
+    events: items, lastUpdated
+  };
+}
+
+export default connect(mapStateToProps)(App);
 
 const styles = styler`
   app

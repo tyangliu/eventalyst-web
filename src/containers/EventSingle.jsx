@@ -5,6 +5,7 @@ import DocumentTitle from 'react-document-title';
 import Radium from 'radium';
 import chunk from 'chunk';
 import styler from 'react-styling';
+import { fetchEventsIfNeeded } from '../redux/actions';
 
 @Radium
 export default class EventSingle extends Component {
@@ -13,40 +14,58 @@ export default class EventSingle extends Component {
     this.props.setLoggedIn(true);
   }
 
+  componentDidMount() {
+    const { dispatch, user } = this.props;
+    dispatch(fetchEventsIfNeeded('562341d0792aacd4437ef07a'));
+  }
+
   render() {
+    const { events, isFetching, lastUpdated } = this.props;
+
+    let matching = events.filter(event => event._id == this.props.params.eventId)
+      , event = (matching.length > 0) ? matching[0] : {};
+
+    let tags = event.tags && event.tags.map ? event.tags.map(tag =>
+        <li style={[styles.tag, {background: 'rgba(0,183,178,1)'}]}>{tag}</li>
+    ) : [];
+
+    tags = tags.slice(0,2);
+
+    let creatorName = event.creator ? (event.creator.name || '') : ''
+      , name = event.name || ''
+      , city = event.city || ''
+      , votes = event.votes || 0
+      , content = event.content || ''
+      , imageUrl = event.imageUrl || '';
+
     return (
       <div>
         <ul style={styles.tagsList}>
-          <li style={[styles.tag, {background: 'rgba(0,183,178,1)'}]}>Technology</li>
+          {tags}
         </ul>
-        <h1 style={styles.title}>The 1337 Hackathon</h1>
+        <h1 style={styles.title}>{name}</h1>
         <ul style={styles.infoList}>
           <li style={styles.infoItem}>
             <i style={styles.icon} className='material-icons'>people</i>
-            The Hackers
+            {creatorName}
           </li>
           <li style={styles.infoItem}>
             <i style={styles.icon} className='material-icons'>place</i>
-            Vancouver, BC
+            {city}
           </li>
         </ul>
-        <div style={styles.photo} />
+        <div style={[styles.photo, {
+          backgroundImage: `url(${imageUrl})`
+        }]} />
         <div style={styles.voteContainer}>
-          <p style={styles.voteCount}>20593 votes</p>
+          <p style={styles.voteCount}>{votes} votes</p>
           <button style={styles.voteButton}>
             <i style={styles.icon} className='material-icons'>thumb_up</i>
             Vote for Event
           </button>
         </div>
         <p style={styles.content}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-          when an unknown printer took a galley of type and scrambled it to make a
-          type specimen book. It has survived not only five centuries,
-          but also the leap into electronic typesetting, remaining essentially unchanged.
-          It was popularised in the 1960s with the release of Letraset sheets
-          containing Lorem Ipsum passages, and more recently with desktop publishing
-          software like Aldus PageMaker including versions of Lorem Ipsum.
+          {content}
         </p>
       </div>
     );
@@ -69,7 +88,7 @@ const styles = styler`
   tag
     padding: 6px 14px
     color: rgba(255,255,255,1)
-    margin-left: 10px
+    margin: 0 6px
     display: inline-block
 
   infoList
@@ -91,7 +110,9 @@ const styles = styler`
 
   photo
     height: 400px
-    background: rgba(57,96,142,1)
+    background-color: rgba(57,96,142,1)
+    background-size: cover
+    background-position: center
 
   voteContainer
     padding: 14px 24px

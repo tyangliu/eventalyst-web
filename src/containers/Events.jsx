@@ -5,7 +5,8 @@ import DocumentTitle from 'react-document-title';
 import Radium from 'radium';
 import chunk from 'chunk';
 import styler from 'react-styling';
-import { EventCard } from './partials';
+import { EventCard } from '../components';
+import { fetchEventsIfNeeded, invalidateEvents } from '../redux/actions';
 
 @Radium
 export default class Events extends Component {
@@ -14,9 +15,18 @@ export default class Events extends Component {
     this.props.setLoggedIn(true);
   }
 
+  componentDidMount() {
+    const { dispatch, user } = this.props;
+    dispatch(fetchEventsIfNeeded('562341d0792aacd4437ef07a'));
+  }
+
   render() {
-    let cards = [1,2,3,4,5,6,7].map((value, index) =>
-      <div style={styles.cardContainer} key={'card'+index}><EventCard /></div>
+    const { events, isFetching, lastUpdated } = this.props;
+
+    let cards = events.map((event, index) =>
+      <div style={styles.cardContainer} key={'card'+index}>
+        <EventCard event={event} />
+      </div>
     );
 
     let cardsRows = chunk(cards, 3).map(row =>

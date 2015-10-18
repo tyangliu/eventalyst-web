@@ -8,30 +8,55 @@ import { Link } from 'react-router';
 @Radium
 export default class EventCard extends Component {
 
+  static defaultProps = {
+    event: {}
+  };
+
   render() {
+    let event = this.props.event;
+
+    let tags = event.tags && event.tags.map ? event.tags.map(tag =>
+      <li style={[styles.tag, {background: 'rgba(0,183,178,1)'}]}>{tag}</li>
+    ) : [];
+
+    tags = tags.slice(0,2);
+
+    let id = event._id
+      , creatorName = event.creator ? event.creator.name : ''
+      , name = event.name
+      , city = event.city
+      , votes = event.votes
+      , imageUrl = event.imageUrl || '';
+
     return (
       <div style={styles.card}>
         <ul style={styles.tagsList}>
-          <li style={[styles.tag, {background: 'rgba(0,183,178,1)'}]}>Technology</li>
+          {tags}
         </ul>
-        <h3 style={styles.title}>The 1337 Hackathon</h3>
+        <Link to={'/events/' + id}>
+          <h3 style={styles.title}>{name}</h3>
+        </Link>
         <ul style={styles.infoList}>
           <li style={styles.infoItem}>
             <i style={styles.icon} className='material-icons'>people</i>
-            The Hackers
+            {creatorName}
           </li>
           <li style={styles.infoItem}>
             <i style={styles.icon} className='material-icons'>place</i>
-            Vancouver, BC
+            {city}
           </li>
         </ul>
-        <div style={styles.photo} />
+        <Link to={'/events/' + id}>
+          <div style={[styles.photo, {
+            backgroundImage: `url(${imageUrl})`
+          }]} />
+        </Link>
         <div style={styles.voteContainer}>
           <button style={styles.voteButton}>
             <i style={styles.icon} className='material-icons'>thumb_up</i>
             Vote for Event
           </button>
-          <p style={styles.voteCount}>20593 votes</p>
+          <p style={styles.voteCount}>{votes} votes</p>
         </div>
       </div>
     );
@@ -44,6 +69,7 @@ const styles = styler`
     border: 1px solid rgba(221,221,221,1)
 
   tagsList
+    min-height: 66px
     padding: 16px 24px
     text-align: right
 
@@ -54,9 +80,14 @@ const styles = styler`
     display: inline-block
 
   title
+    white-space: nowrap
+    height: 53px
     font-size: 24px
+    text-overflow: ellipsis
+    overflow: hidden
     font-weight: 700
     padding: 0 24px 16px
+    color: rgba(63,63,63,1)
     border-bottom: 1px solid rgba(238,238,238,1)
 
   infoList
@@ -76,7 +107,9 @@ const styles = styler`
 
   photo
     height: 200px
-    background: rgba(57,96,142,1)
+    background-color: rgba(57,96,142,1)
+    background-size: cover
+    background-position: center
 
   voteCount
     padding: 16px 24px

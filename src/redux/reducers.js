@@ -1,3 +1,6 @@
+'use strict';
+
+import assign from 'object-assign';
 import { combineReducers } from 'redux';
 import {
   LOGIN, LOGOUT, ADD_EVENT, VOTE_EVENT, SPONSOR_EVENT,
@@ -22,16 +25,16 @@ function events(state = {
 }, action) {
   switch (action.type) {
   case INVALIDATE_EVENTS:
-    return Object.assign({}, state, {
+    return assign({}, state, {
       didInvalidate: true
     });
   case REQUEST_EVENTS:
-    return Object.assign({}, state, {
+    return assign({}, state, {
       isFetching: true,
       didInvalidate: false
     });
   case RECEIVE_EVENTS:
-    return Object.assign({}, state, {
+    return assign({}, state, {
       isFetching: false,
       didInvalidate: false,
       items: action.events,

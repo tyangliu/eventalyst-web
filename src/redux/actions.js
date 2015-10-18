@@ -67,24 +67,26 @@ export function receiveEvents(userId, json) {
   return {
     type: RECEIVE_EVENTS,
     userId,
-    events: json.data.children.map(child => child.data),
+    events: json,
     receivedAt: Date.now()
   };
 }
 
 function fetchEvents(userId) {
+  console.log('test');
   return dispatch => {
     // notify beginning of fetch
     dispatch(requestEvents(userId));
     // do request here
-    return fetch(`http://eventalyst.com/events`)
+    return fetch(`http://89d8fb0d.ngrok.io/events`)
       .then(response => response.json())
-      .then(json => dispatch(receiveEvents(userId, json)));
+      .then(json => { dispatch(receiveEvents(userId, json)); });
   };
 }
 
 function shouldFetchEvents(state, userId) {
   const events = state.events;
+  return true;
   if (!events) {
     return true;
   } else if (events.isFetching) {
