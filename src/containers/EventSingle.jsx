@@ -38,6 +38,20 @@ export default class EventSingle extends Component {
       , content = event.content || ''
       , imageUrl = event.imageUrl || '';
 
+    let sponsors = event.sponsors ? event.sponsors.map(sponsor =>
+      <li style={styles.sponsorItem}>
+        <div style={[styles.sponsorLogo, {
+          backgroundImage: `url(${sponsor.logoUrl})`
+        }]} />
+        <div style={styles.sponsorInfo}>
+          <h3 style={styles.sponsorName}>{sponsor.name}</h3>
+          <p style={styles.sponsorDescription}>{sponsor.description}</p>
+          <p style={styles.sponsorContent}>{sponsor.content}</p>
+        </div>
+        <div style={styles.clearfix} />
+      </li>
+    ) : [];
+
     return (
       <div>
         <ul style={styles.tagsList}>
@@ -59,14 +73,22 @@ export default class EventSingle extends Component {
         }]} />
         <div style={styles.voteContainer}>
           <p style={styles.voteCount}>{votes} votes</p>
-          <button style={styles.voteButton}>
+          <button style={styles.button.vote}>
             <i style={styles.icon} className='material-icons'>thumb_up</i>
-            Vote for Event
+            Vote
+          </button>
+          <button style={styles.button.sponsor}>
+            <i style={styles.icon} className='material-icons'>loyalty</i>
+            Sponsor
           </button>
         </div>
         <p style={styles.content}>
           {content}
         </p>
+        <div style={styles.sponsorsContainer}>
+          <h3 style={styles.sponsorsTitle}>Sponsors</h3>
+          <ul>{sponsors}</ul>
+        </div>
       </div>
     );
   }
@@ -123,7 +145,7 @@ const styles = styler`
     padding: 10px 24px
     display: inline-block
 
-  voteButton
+  button
     padding: 10px 24px
     border: none
     display: inline-block
@@ -133,11 +155,60 @@ const styles = styler`
     font-size: 15px
     line-height: 20px
     outline: none
-    color: rgba(239,67,121,1)
+    cursor: pointer
+
+    &vote
+      color: rgba(239,67,121,1)
+
+    &sponsor
+      color: rgba(15,191,188,1)
 
   content
     padding: 36px 24px
     max-width: 740px
     line-height: 1.5em
     margin: 0 auto
+    border-bottom: 1px solid rgba(238,238,238,1)
+
+  sponsorsContainer
+    padding: 16px 24px
+    max-width: 788px
+    margin: 0 auto
+
+  sponsorsTitle
+    text-align: center
+    margin-bottom: 24px
+    padding-bottom: 16px
+    border-bottom: 1px solid rgba(238,238,238,1)
+
+  sponsorItem
+    max-width: 740px
+    margin: 0 auto
+    border-bottom: 1px solid rgba(238,238,238,1)
+    margin-bottom: 24px
+
+  sponsorLogo
+    float: left
+    width: 30%
+    height: 160px
+    background-position: top center
+    background-repeat: no-repeat
+    background-size: contain
+
+  sponsorInfo
+    float: right
+    padding-left: 40px
+    width: 70%
+
+  sponsorName
+    font-size: 18px
+    font-weight: bold
+
+  sponsorDescription
+    margin-bottom: 16px
+    font-style: italic
+
+  clearfix
+    clear: both
+    display: table
 `;

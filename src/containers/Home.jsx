@@ -60,8 +60,12 @@ const styles = styler`
     width: 80%
     max-width: 800px
     height: 800px
-    background: rgba(0,0,0,0.1)
     border-radius: 5px
+    background-color: rgba(0,0,0,0.1)
+    background-image: url(${require('../images/screenshot.png')})
+    background-position: top center
+    background-size: contain
+    box-shadow: 0px -1px 4px rgba(0,0,0,0.2)
 
   descriptionsContainer
     color: rgba(255,255,255,1)

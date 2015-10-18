@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Radium, { Style } from 'radium';
 import styler from 'react-styling';
 import { Router, Link } from 'react-router';
-import { NavBar, FooterBar } from '../components';
+import { NavBar, Footer } from '../components';
 
 @Radium
 class App extends Component {
@@ -35,6 +35,7 @@ class App extends Component {
             dispatch: this.props.dispatch
           })}
         </main>
+        <Footer />
       </div>
     );
   }

@@ -5,6 +5,7 @@ import Radium, { Style } from 'radium';
 import styler from 'react-styling';
 import { Link } from 'react-router';
 import EntryLinks from './EntryLinks.jsx';
+import UserMenu from './UserMenu.jsx';
 
 @Radium
 export default class NavBar extends Component {
@@ -16,8 +17,8 @@ export default class NavBar extends Component {
   render() {
     return (
       <nav style={styles.nav} className="mainNav">
-        <h1 style={styles.logo}>eventalyst</h1>
-        {this.props.isLoggedIn ? <div /> : <EntryLinks />}
+        <Link to='/events'><h1 style={styles.logo}>eventalyst</h1></Link>
+        {this.props.isLoggedIn ? <UserMenu /> : <EntryLinks />}
       </nav>
     );
   }

@@ -52,9 +52,13 @@ export default class EventCard extends Component {
           }]} />
         </Link>
         <div style={styles.voteContainer}>
-          <button style={styles.voteButton}>
+          <button style={styles.button.sponsor}>
+            <i style={styles.icon} className='material-icons'>loyalty</i>
+            Sponsor
+          </button>
+          <button style={styles.button.vote}>
             <i style={styles.icon} className='material-icons'>thumb_up</i>
-            Vote for Event
+            Vote
           </button>
           <p style={styles.voteCount}>{votes} votes</p>
         </div>
@@ -74,9 +78,10 @@ const styles = styler`
     text-align: right
 
   tag
-    padding: 6px 14px
+    padding: 3px 14px
     color: rgba(255,255,255,1)
     margin-left: 10px
+    font-size: 13px
     display: inline-block
 
   title
@@ -114,7 +119,7 @@ const styles = styler`
   voteCount
     padding: 16px 24px
 
-  voteButton
+  button
     padding: 16px 24px
     border: none
     float: right
@@ -124,5 +129,11 @@ const styles = styler`
     font-size: 15px
     line-height: 20px
     outline: none
-    color: rgba(239,67,121,1)
+    cursor: pointer
+
+    &vote
+      color: rgba(239,67,121,1)
+
+    &sponsor
+      color: rgba(15,191,188,1)
 `;

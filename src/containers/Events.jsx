@@ -38,6 +38,10 @@ export default class Events extends Component {
 
     return (
       <div style={styles.events}>
+        <div style={styles.search}>
+          <i className='material-icons' style={styles.icon}>search</i>
+          <input style={styles.searchInput} type='text' placeholder='Search for tags' />
+        </div>
         {cardsRows}
       </div>
     );
@@ -57,6 +61,30 @@ const styles = styler`
     @media (max-width: 1080px)
       width: 100%
       margin-bottom: 24px
+
+  icon
+    font-size: 20px
+    line-height: 24px
+    float: left
+    padding-right: 14px
+    color: rgba(0,0,0,0.3)
+
+  search
+    background: rgba(0,0,0,0.033)
+    padding: 16px 36px
+    margin-left: -24px
+    margin-right: -24px
+    margin-bottom: 36px
+    border-bottom: 1px solid rgba(0,0,0,0.1)
+
+  searchInput
+    background: rgba(0,0,0,0)
+    font-family: 'proxima-nova', sans-serif
+    font-size: 15px
+    line-height: 24px
+    border: none
+    width: 40%
+    outline: none
 
   cardsRow
     margin-bottom: 24px
