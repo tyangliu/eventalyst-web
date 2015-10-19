@@ -78,7 +78,7 @@ function fetchEvents(userId) {
     // notify beginning of fetch
     dispatch(requestEvents(userId));
     // do request here
-    return fetch(`http://89d8fb0d.ngrok.io/events`)
+    return fetch(`http://159.203.68.160/events`)
       .then(response => response.json())
       .then(json => { dispatch(receiveEvents(userId, json)); });
   };
